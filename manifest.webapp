@@ -1,0 +1,13 @@
+{
+  "name": "ibnjs",
+  "description": "Ibniz for Firefox OS",
+  "launch_path": "/index.html",
+  "icons": {
+    "128": "/img/icone-128.png"
+  },
+  "developer": {
+    "name": "AmarOk",
+    "url": "http://enconn.fr"
+  },
+  "default_locale": "fr"
+}

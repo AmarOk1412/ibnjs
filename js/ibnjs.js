@@ -1,42 +1,3 @@
-<html>
-<head>
-<title>IBNIZ-js</title>
-</head>
-<body>
-<canvas id="ibniz" width="256" height="256">
-Why u no canvas
-</canvas><br>
-<form>
-	<input type="text" id="code" style="width: 256px"><br>
-<input type="checkbox" id="pause">Pause <input type="checkbox" id="simpleGetPut">Simple memory access<br>
-<input type="checkbox" id="halfRes">Half resolution<br>
-<input type="checkbox" id="useAudio">Audio (experimental, firefox/chrome/safari)<br>
-<input type="checkbox" id="recalcAudio">More accurate audio (slightly slower)<br>
-Load: <select id="example_apps">
-<option value=""></option>
-<option value="^x7r+Md8r&">Munching squares</option>
-<option value="sv5rvs--">Plasma</option>
-<option value="v8rsdv*vv*^">XOR texture zoomer</option>
-<option value="8rw10r%w18r%">FreeFull - opening gate</option>
-<option value="sxsaxAr+waxBr+^">FreeFull - spinny</option>
-<option value="axp wvvx3r40/&^^ wd*xd*+qq1x/sx8r++ 30FF|">FreeFull - rose</option>
-<option value="8rw10raw8r+w18r^">FreeFull - xorwiggle</option>
-<option value="v8rsdv*vv*^wpp8r-">Munching zoomer</option>
-<option value="ax8r+3lwd*xd*+q1x/x5r+^">Texture tunnel</option>
-<option value="v8rds4X3)Lx~2Xv*vv*+i!L1@2@^">Rotozoomer</option>
-<option value="sa*">bubsy - looks funny after a while</option>
-<option value="d4rr">asiekierka - 4-char demo</option>
-<option value="wpp2rr+d*+M8rd11rx*">asiekierka - mindrape01</option>
-<option value="w8r-sqwqd*&w1~&+">asiekierka - glass</option>
-<option value="6{^^ddd***1%}5{v8rsdv*vv*^wpp8r-}4{v8rdsx.6+s4X3)Lx~2Xv*vv*+i!L1@2@^}3{ax8r+3lwd*xd*+q1x/x6r+^}2)6r3&3+V55A9^Md6r|5*wdAr&+">viznut - ibnizdemo.ib</option>
-<option value="axCr3ls3r+43lwd*xd*+q1x/x7r+^1%w^x20r8l+^M3*w5r&w5*w9r&w2*w6r&||">FreeFull - christmas demo</option>
-</select>
-</form>
-<div id="fps"><b>FPS:</b> [loading...]</div>
-<b>IBNIZ-js 0.C</b><br>
-<a href="https://github.com/asiekierka/ibnjs">Github repository</a><br>
-<a href="mailto:asiekierka@gmail.com">Contact</a><br>
-<script type="text/javascript">
 /* This program is free software. It comes without any warranty, to
  * the extent permitted by applicable law. You can redistribute it
  * and/or modify it under the terms of the Do What The Fuck You Want
@@ -83,6 +44,8 @@ Array.prototype.dup = function(){
 Array.prototype.dpush = function(v){
 	this.push(v|0);
 }
+
+
 function Parser(simpleGetPut,useAudio)
 {
 	this.code = "";
@@ -118,104 +81,8 @@ function Parser(simpleGetPut,useAudio)
 	{
 		this.useAudio=useAudio;
 		this.recalcAudio=recalcAudio;
-		if(simpleGetPut)
-		{
-			this.get = function(addr) { return this.mem[addr]; }
-			this.put = function(addr,val) { this.mem[addr]=val; }
-		}
-		else
-		{
-			this.get = function(addr,val){
-				switch(addr>>15)
-				{
-					case 0:
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-					case 5:
-					case 6:
-					case 7:
-					case 8:
-					case 9:
-					case 10:
-					case 11:
-					case 12:
-					case 13:
-					case 14:
-					case 15:
-					case 16:
-					case 17:
-					case 18:
-					case 19:
-					case 20:
-					case 21:
-					case 22:
-					case 23:
-					case 24:
-						return this.mem[addr];
-						break;
-					case 25:
-						return this.rstacka[addr&0x3FFF];
-						break;
-					case 26:
-					case 27:
-						return this.stacka[addr&0xFFFF];
-						break;
-					case 28:
-					case 29:
-					case 30:
-					case 31:
-						return this.stacka[addr&0x1FFFF];
-						break;
-				}
-			}
-			this.put = function(addr,val){
-				switch(addr>>15)
-				{
-					case 0:
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-					case 5:
-					case 6:
-					case 7:
-					case 8:
-					case 9:
-					case 10:
-					case 11:
-					case 12:
-					case 13:
-					case 14:
-					case 15:
-					case 16:
-					case 17:
-					case 18:
-					case 19:
-					case 20:
-					case 21:
-					case 22:
-					case 23:
-					case 24:
-						this.mem[addr] = val;
-						break;
-					case 25:
-						this.rstacka.put(addr&0x3FFF,val);
-						break;
-					case 26:
-					case 27:
-						this.stacka.put(addr&0xFFFF,val);
-						break;
-					case 28:
-					case 29:
-					case 30:
-					case 31:
-						this.stacka.put(addr&0x1FFFF,val);
-						break;
-				}
-			}
-		}
+		this.get = function(addr) { return this.mem[addr]; }
+		this.put = function(addr,val) { this.mem[addr]=val; }
 	}
 	this.config(simpleGetPut,useAudio);
 	this.load = function(c)
@@ -267,7 +134,7 @@ function Parser(simpleGetPut,useAudio)
 		{
 			// run audio, too
 			this.videoout = this.stacka.pop();
-			if((this.useFFAudio || this.useChromeAudio) && this.useAudio) 
+			if(this.useFFAudio && this.useAudio) 
 			{
 				if(this.stackmode==1 && !this.recalcAudio)
 					this.audioout=this.videoout; // same stack data, skip the processing bulk
@@ -282,7 +149,7 @@ function Parser(simpleGetPut,useAudio)
 				}
 			}
 		}
-		if((this.useFFAudio || this.useChromeAudio) && this.useAudio && this.mode==1) this.audioout = this.stacka.pop();
+		if(this.useFFAudio && this.useAudio && this.mode==1) this.audioout = this.stacka.pop();
 	}
 	this.isLimm = function(ci)
 	{
@@ -443,22 +310,6 @@ function Parser(simpleGetPut,useAudio)
 	}
 	this.compile = function()
 	{
-// TODO: fix parse ip settings
-/*
-		var i = 0;
-		var oldCode = this.code;
-		this.evals = new Array();
-		this.evals[0] = function(){};
-		while(i<oldCode.length)
-		{
-			this.parse();
-			this.evaluate();
-			this.evals[i] = this.evalCode;
-			this.code = this.code.substr(1);
-			this.parsedCode = new Array();
-			i++;
-		}
-*/
 		var i = 0;
 		var oldCode = this.parsedCode;
 		this.parse();
@@ -581,7 +432,7 @@ function Parser(simpleGetPut,useAudio)
 						case 33:
 							tempCode +=	"a = me.rol16(stacka.pop()); me.put(a&1048575,stacka.pop());";
 							break;
-						// Return stack manipulation	
+						// Return stack manipulation
 						case 82:
 							tempCode +=	"stacka.push(me.rstacka.pop());";
 							break;
@@ -787,25 +638,14 @@ function Parser(simpleGetPut,useAudio)
 			this.ip = this.evals[this.ip](this,x,y)+1;
 	}
 	this.useFFAudio = false;
-	this.useChromeAudio = false;
 	this.recalcAudio = false;
 	this.buffer = new Array(512);
 	if(typeof Audio !== 'undefined')
 	{
-		this.audioOut = new Audio();
-		if(this.audioOut.mozSetup)
-		{
-			this.audioOut.mozSetup(1,512*60);
-			this.useFFAudio = true;
-			this.buffer = new Float32Array(512);
-		}
-	}
-	if(typeof webkitAudioContext !== 'undefined')
-	{
-		this.audioCtx = new webkitAudioContext();
-		this.audioSR = this.audioCtx.sampleRate/60;
-		this.useChromeAudio = true;
-		this.buffer = new Float32Array(512);
+		this.audioOut = new AudioContext();
+		//this.buffer = new Float32Array(512);
+		this.buffer = this.audioOut.createBuffer(1, 512, 44100);
+		this.useFFAudio = true;
 	}
 	this.render = function(c)
 	{
@@ -827,33 +667,7 @@ function Parser(simpleGetPut,useAudio)
 				id[imgpos++] = (298*cy - 100*cu - 208*cv + 128)>>8;
 				id[imgpos++] = (298*cy + 516*cu + 128)>>8;
 				id[imgpos++] = 255;
-				this.buffer[(y<<1)] = (((this.audioout&65535)^32768)-32768)/32768;
-			}
-		}
-		c.putImageData(idd,0,0);
-		this.renderAudio();
-	}
-	this.render2 = function(c)
-	{
-		var idd = c.createImageData(128,128);
-		var id = idd.data;
-		var imgpos = 0;
-		var cy = 0;
-		var cu = 0;
-		var cv = 0;
-		for(var y=0;y<256;y+=2)
-		{
-			for(var x=0;x<256;x+=2)
-			{
-				this.run(x,y);
-				cy = (p.videoout>>>8)&255;
-				cu = (((p.videoout>>>16)&255)^0x80)-128;
-				cv = ((p.videoout>>>24)^0x80)-128;
-				id[imgpos++] = (298*cy + 409*cv + 128)>>8;
-				id[imgpos++] = (298*cy - 100*cu - 208*cv + 128)>>8;
-				id[imgpos++] = (298*cy + 516*cu + 128)>>8;
-				id[imgpos++] = 255;
-				this.buffer[(y<<1)] = (((this.audioout&65535)^32768)-32768)/32768;
+				this.buffer.getChannelData(0)[(y<<1)] = (((this.audioout&65535)^32768)-32768);//(((this.audioout&65535)^32768)-32768)/32768;
 			}
 		}
 		c.putImageData(idd,0,0);
@@ -861,75 +675,51 @@ function Parser(simpleGetPut,useAudio)
 	}
 	this.renderAudio = function()
 	{
-		if(this.useFFAudio) this.audioOut.mozWriteAudio(this.buffer);
-		else if(this.useChromeAudio)
-		{
-			if(this.audioOut.noteOff) this.audioOut.noteOff(0);
-			this.fixbuffer = new Float32Array(this.audioSR);
-			for(var i=0;i<this.audioSR;i++)
-			{
-				var t1 = i*512/this.audioSR;
-				var t2 = t1-Math.floor(t1);
-				this.fixbuffer[i]=this.buffer[Math.floor(t1)]*(1-t2)+this.buffer[Math.ceil(t1)]*t2;
-			}
-			this.aBuffer = this.audioCtx.createBuffer(1,this.audioSR,this.audioSR*60);
-			this.aBuffer.getChannelData(0).set(this.fixbuffer);
-			this.audioOut = this.audioCtx.createBufferSource();
-			this.audioOut.buffer=this.aBuffer;
-			this.audioOut.connect(this.audioCtx.destination);
-			this.audioOut.noteOn(0);
-			this.audioOut.loop = true;
-		}
+		if(this.useFFAudio) this.playAudio();//TODO audio part
 	}
 	this.delayAudio = function(a)
 	{
-		if(this.useFFAudio) for(var b=0; b<a; b++) this.audioOut.mozWriteAudio(this.buffer);
+		if(this.useFFAudio) this.playAudio();//TODO audio part
+	}
+	this.playAudio = function()
+	{
+		var source = this.audioOut.createBufferSource();
+		source.buffer = this.buffer;
+		source.connect(this.audioOut.destination);
+		source.start(0);
 	}
 }
-var p = new Parser(false,false);
+
+
+
+var p = new Parser(true,true);
+
 var oldloop = new Date;
 var cc = document.getElementById("ibniz");
 var c = cc.getContext("2d");
+
 var runningCode = " ";
 p.load(runningCode);
 p.t=0;
+
 var codeEdit = document.getElementById("code");
-var fpsField = document.getElementById("fps");
-var pause = document.getElementById("pause");
-var simpleGetPut = document.getElementById("simpleGetPut");
-var useAudio = document.getElementById("useAudio");
-var recalcAudio = document.getElementById("recalcAudio");
-var exampleApps = document.getElementById("example_apps");
-var exampleAppID = -1;
-var halfRes = document.getElementById("halfRes");
-var cc2 = document.createElement("canvas");
-cc2.width = 256;
-cc2.height = 256;
-var c2 = cc2.getContext("2d");
+
+var simpleGetPut = true;
+var useAudio = true;
+var recalcAudio = true;
+
 function derp()
 {
-	if(!pause.checked)
-	{
-		if(halfRes.checked)
-		{
-			p.render2(c2);
-			c.drawImage(cc2,0,0,128,128,0,0,256,256);
-		}
-		else p.render(c);
+		p.render(c);
 		var newloop = new Date;
 		var fps = 1000 / (newloop - oldloop);
 		oldloop=newloop;
 		p.t+=60/fps;
 		p.delayAudio(Math.round(60/fps));
 		p.configureStackmode();
+		
 		p.config(simpleGetPut.checked,useAudio.checked,recalcAudio.checked);
-		//fpsField.childNodes[1].nodeValue=fps.toFixed(2) + " (about " + (fps*65536*p.parsedCode.length).toFixed(0) + " cycles)";
-		fpsField.childNodes[1].nodeValue=fps.toFixed(2);
-		if(exampleApps.selectedIndex!=exampleAppID)
-		{
-			exampleAppID=exampleApps.selectedIndex;
-			codeEdit.value = exampleApps.options[exampleAppID].value;
-		}
+
 		if(runningCode!=codeEdit.value)
 		{
 			p.t=0;
@@ -937,32 +727,8 @@ function derp()
 			p.load(runningCode);
 			console.log("NEW CODE LOADED");
 		}
-	}
+
 	setTimeout("derp()",1); // give the browser time to not lag the whole computer
 }
-function loadFileURL()
-{
-	var url = prompt("Please input an URL","");
-	var http = createRequestObject();
-	function createRequestObject() { // http://www.openhosting.co.uk/articles/webdev/5899/
-		var objAjax;
-		var browser = navigator.appName;
-		if(browser == "Microsoft Internet Explorer"){
-			objAjax = new ActiveXObject("Microsoft.XMLHTTP");
-		}else{
-			objAjax = new XMLHttpRequest();
-		}
-		return objAjax;
-	}
-	function updateFileURL() {
-		if(http.readyState == 4)
-			codeEdit.value=http.responseText;
-	}
-	http.open('get',url);
-	http.onreadystatechange = updateFileURL;
-	http.send(null);
-}
+
 derp();
-</script>
-</body>
-</html>0
